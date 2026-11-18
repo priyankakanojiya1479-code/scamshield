@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScamSield by glitch hunters</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+   
+    :root {
+      --bg-base: midnight black;
+      --bg-glow:deeep nsvy blue;
+      --accent-1: teal Mint; 
+      --accent-2: electric indigo; 
+      --glass-bg: rgba(8, 13, 28, 0.74);
+      --glass-border: rgba(45, 212, 191, 0.22);
+    }
+
+    body[data-env="aurora"] {
+      --bg-base: black;
+      --bg-glow: black;
+      --accent-1: turquoise Teal;
+      --accent-2: soft periwinkle Indigo;
+      --glass-bg: rgba(8, 13, 28, 0.74);
+      --glass-border: rgba(45, 212, 191, 0.24);
+    }
+
+    body[data-env="quantum"] {
+      --bg-base: deep midnight navy;
+      --bg-glow: dark blue glow;
+      --accent-1: ice blue sky cyan;
+      --accent-2: soft yellow;
+      --glass-bg: rgba(6, 16, 34, 0.76);
+      --glass-border: rgba(56, 189, 248, 0.26);
+    }
+
+    body[data-env="crimson"] {
+      --bg-base: deep black red;
+      --bg-glow: dark crimson;
+      --accent-1: soft coral pink;
+      --accent-2: golden yellow;
+      --glass-bg: rgba(20, 7, 14, 0.78);
+      --glass-border: rgba(251, 113, 133, 0.28);
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 0%, var(--bg-glow) 0%, var(--bg-base) 75%);
+      color: soft wheat;
+      transition: background 0.6s ease;
+    }
+
+    #hexAuroraCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .vault-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 18px 45px -15px rgba(0, 0, 0, 0.8);
+      transition: border-color 0.35s ease, transform 0.25s ease;
+    }
+
+    @keyframes orbitClockwise {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes orbitCounter {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+    @keyframes coreBreath {
+      0%, 100% { transform: scale(0.96); opacity: 0.85; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+    .ring-cw {
+      animation: orbitClockwise 18s linear infinite;
+      transform-origin: center;
+    }
+    .ring-ccw {
+      animation: orbitCounter 12s linear infinite;
+      transform-origin: center;
+    }
+    .shield-core {
+      animation: coreBreath 3.2s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+  </style>
+</head>
+<body data-env="aurora" class="antialiased selection:bg-teal-400/30 selection:text-teal-200 overflow-x-hidden">
+
+  
+  <canvas id="hexAuroraCanvas"></canvas>
+
+  
+  <div class="bg-slate-950/90 border-b border-white/10 py-1.5 overflow-hidden text-xs font-mono">
+    <div class="flex items-center">
+      <span class="px-3 py-0.5 ml-2 mr-3 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold shrink-0 flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
+        LIVE INTEL
+      </span>
+      <div class="overflow-hidden flex-1">
+        <div id="liveTickerTrack" class="marquee-track gap-8 text-slate-300">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <header class="sticky top-0 z-40 vault-card border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+      
+      
+      <a href="#" onclick="playTone('tap')" class="flex items-center gap-2.5 group shrink-0">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-teal-400 via-indigo-400 to-emerald-300 p-[2px] shadow-lg shadow-teal-500/20 group-hover:scale-105 transition">
+          <div class="w-full h-full bg-[#050814] rounded-[14px] flex items-center justify-center">
+            <svg class="w-5 h-5 text-teal-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L4 5.5v6.2c0 5.1 3.4 9.8 8 11.3 4.6-1.5 8-6.2 8-11.3V5.5L12 2z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.2l2 2 4.2-4.2"/>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <span class="font-black text-lg sm:text-xl tracking-tight bg-gradient-to-r from-white via-teal-200 to-indigo-300 bg-clip-text text-transparent block leading-none">
+            ScamShield
+          </span>
+          <span class="text-[10px] font-mono text-teal-400 tracking-widest uppercase">Glitch Hunters</span>
+        </div>
+      </a>
+
+      
+      <div class="hidden lg:flex items-center bg-slate-950/90 border border-white/10 rounded-full p-1 gap-1">
+        <button id="envBtn-aurora" onclick="switchEnvironment('aurora')" class="px-3 py-1 rounded-full text-xs font-semibold bg-teal-500/25 text-teal-200 border border-teal-400/40 transition cursor-pointer">
+          Aurora Hex
+        </button>
+        <button id="envBtn-quantum" onclick="switchEnvironment('quantum')" class="px-3 py-1 rounded-full text-xs font-semibold text-slate-400 hover:text-sky-300 transition cursor-pointer">
+          Quantum Sonar
+        </button>
+        <button id="envBtn-crimson" onclick="switchEnvironment('crimson')" class="px-3 py-1 rounded-full text-xs font-semibold text-slate-400 hover:text-rose-300 transition cursor-pointer">
+         Crimson Vault
+        </button>
+      </div>
+
+      
+      <nav class="hidden md:flex items-center gap-5 text-sm font-medium text-slate-300">
+        <a href="#dna-scanner" onclick="playTone('tap')" class="hover:text-teal-300 transition">DNA Scanner</a>
+        <a href="#call-simulator" onclick="playTone('tap')" class="hover:text-indigo-300 transition">Fake Call Sim</a>
+        <a href="#upi-checker" onclick="playTone('tap')" class="hover:text-teal-300 transition">UPI Trap</a>
+        <a href="#inbox-game" onclick="playTone('tap')" class="hover:text-amber-300 transition flex items-center gap-1.5">
+          Defender Game
+          <span id="navScoreBadge" class="px-2 py-0.5 rounded-full text-xs font-mono bg-teal-500/20 text-teal-300 border border-teal-400/30">0 PTS</span>
+        </a>
+      </nav>
+
+      
+      <div class="flex items-center gap-2">
+        <button id="audioToggleBtn" onclick="toggleAudio()" title="Toggle UI Sound Effects" class="p-2.5 rounded-xl bg-slate-900/90 border border-white/15 text-teal-300 hover:bg-slate-800 active:scale-95 transition cursor-pointer">
+          🔊
+        </button>
+        <button onclick="openPanicVault()" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-rose-600 to-red-600 text-white border border-rose-400/50 shadow-lg shadow-rose-600/30 hover:brightness-110 active:scale-95 transition cursor-pointer flex items-center gap-1.5">
+          <span>🚨</span>
+          <span>Panic 1930</span>
+        </button>
+      </div>
+    </div>
+
+    
+    <div class="flex lg:hidden items-center justify-center gap-2 py-1.5 px-3 bg-slate-950/80 border-t border-white/5 text-[11px]">
+      <span class="text-slate-400 font-mono">BG MODE:</span>
+      <button onclick="switchEnvironment('aurora')" class="px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-200 border border-teal-400/30 cursor-pointer">Aurora Hex</button>
+      <button onclick="switchEnvironment('quantum')" class="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-200 border border-sky-400/30 cursor-pointer">Quantum</button>
+      <button onclick="switchEnvironment('crimson')" class="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-200 border border-rose-400/30 cursor-pointer">Crimson</button>
+    </div>
+  </header>
+
+  
+  <section class="relative pt-10 pb-14 lg:pt-16 lg:pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+       
+        <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-500/15 border border-teal-400/30 text-teal-200 text-xs font-mono">
+            <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+            INDIA'S NEXT-GEN ANTI-SCAM & UPI ARMOR
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
+            Har Digital Trap Ko <br class="hidden sm:inline" />
+            <span class="bg-gradient-to-r from-teal-300 via-indigo-300 to-emerald-300 bg-clip-text text-transparent">
+              Pehle Hi Pehchano.
+            </span>
+          </h1>
+
+          <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            Fake KYC links, UPI Collect tricks, ya "Digital Arrest" scam calls—paste any message, test a live simulated scam call, or verify QR requests in 1 tap.
+          </p>
+
+         
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
+            <button onclick="scrollToSection('dna-scanner', 'scanInput')" class="px-6 py-3.5 rounded-2xl font-extrabold text-slate-950 bg-gradient-to-r from-teal-300 via-emerald-300 to-indigo-300 hover:brightness-110 shadow-xl shadow-teal-500/25 flex items-center gap-2 active:scale-95 transition cursor-pointer">
+              <span>🛡️</span>
+              <span>Launch AI Scanner</span>
+            </button>
+            <button onclick="scrollToSection('call-simulator')" class="px-5 py-3.5 rounded-2xl font-bold text-indigo-200 vault-card hover:border-indigo-400/60 flex items-center gap-2 active:scale-95 transition cursor-pointer">
+              <span>📞</span>
+              <span>Test Fake Call</span>
+            </button>
+            <button onclick="openPanicVault()" class="px-5 py-3.5 rounded-2xl font-bold text-rose-200 bg-rose-500/15 border border-rose-500/40 hover:bg-rose-500/25 flex items-center gap-2 active:scale-95 transition cursor-pointer">
+              <span>🚨</span>
+              <span>Emergency 1930</span>
+            </button>
+          </div>
+
+          
+          <div class="grid grid-cols-3 gap-3 pt-4 max-w-lg mx-auto lg:mx-0">
+            <div class="vault-card rounded-2xl p-3.5 text-center lg:text-left">
+              <div id="heroScansCount" class="text-xl sm:text-2xl font-mono font-extrabold text-teal-300">148,920</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-0.5">Threats Blocked</div>
+            </div>
+            <div class="vault-card rounded-2xl p-3.5 text-center lg:text-left">
+              <div class="text-xl sm:text-2xl font-mono font-extrabold text-indigo-300">0.12s</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-0.5">DNA Scan Speed</div>
+            </div>
+            <div class="vault-card rounded-2xl p-3.5 text-center lg:text-left">
+              <div class="text-xl sm:text-2xl font-mono font-extrabold text-emerald-300">100%</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-0.5">On-Device Safe</div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+            <svg class="w-full h-full drop-shadow-[0_0_35px_rgba(45,212,191,0.3)]" viewBox="0 0 320 320" fill="none">
+              <defs>
+                <linearGradient id="hexShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#2dd4bf"/>
+                  <stop offset="50%" stop-color="#818cf8"/>
+                  <stop offset="100%" stop-color="#34d399"/>
+                </linearGradient>
+                <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#04060d" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              
+              <circle cx="160" cy="160" r="140" fill="url(#coreGlow)"/>
+
+            
+              <circle class="ring-cw" cx="160" cy="160" r="136" stroke="#2dd4bf" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="10 8"/>
+              
+              
+              <circle class="ring-ccw" cx="160" cy="160" r="112" stroke="#818cf8" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="28 12 6 12"/>
+
+              
+              <polygon points="160,36 267,98 267,222 160,284 53,222 53,98" stroke="url(#hexShieldGrad)" stroke-width="2" fill="#070d1f" fill-opacity="0.72"/>
+
+              
+              <g class="shield-core">
+                <path d="M160 72L222 98V154C222 197 195 234 160 248C125 234 98 197 98 154V98L160 72Z" fill="#0c1733" stroke="url(#hexShieldGrad)" stroke-width="4"/>
+                
+                <circle cx="160" cy="156" r="34" fill="#2dd4bf" fill-opacity="0.14" stroke="#2dd4bf" stroke-width="2"/>
+                <path d="M145 156L155 166L177 144" stroke="#5eead4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+
+              
+              <circle cx="160" cy="24" r="5" fill="#2dd4bf"/>
+              <circle cx="296" cy="160" r="5" fill="#818cf8"/>
+              <circle cx="160" cy="296" r="5" fill="#34d399"/>
+              <circle cx="24" cy="160" r="5" fill="#fb7185"/>
+            </svg>
+
+            
+            <div class="absolute -top-1 left-2 vault-card px-3 py-1.5 rounded-xl text-[11px] font-mono text-teal-300 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+              UPI GUARD: ON
+            </div>
+            <div class="absolute -bottom-1 right-2 vault-card px-3 py-1.5 rounded-xl text-[11px] font-mono text-indigo-300 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+              AI X-RAY: READY
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="dna-scanner" class="py-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="vault-card rounded-3xl p-6 sm:p-8 border border-teal-400/25">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-teal-400">Module 01 • Forensic Text X-Ray</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">AI Scam DNA & Trigger X-Ray</h2>
+            <p class="text-sm text-slate-400 mt-1">Paste any suspicious SMS, WhatsApp forward, or test 1-click scam samples below.</p>
+          </div>
+
+          
+          <div class="flex flex-wrap gap-2">
+            <button onclick="loadSampleMessage('upi')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25 transition cursor-pointer">
+              UPI Refund Trap
+            </button>
+            <button onclick="loadSampleMessage('arrest')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer">
+              Digital Arrest Call
+            </button>
+            <button onclick="loadSampleMessage('job')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/25 transition cursor-pointer">
+              YouTube Job Offer
+            </button>
+            <button onclick="loadSampleMessage('safe')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition cursor-pointer">
+              Real Bank Alert
+            </button>
+          </div>
+        </div>
+
+        
+        <div class="mt-6 space-y-4">
+          <textarea
+            id="scanInput"
+            rows="4"
+            placeholder="Paste suspicious SMS, WhatsApp link, UPI request, or email text here..."
+            class="w-full rounded-2xl bg-slate-950/90 border border-slate-700/80 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 text-slate-100 placeholder-slate-500 p-4 text-sm sm:text-base outline-none transition"
+          ></textarea>
+
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button onclick="analyzeMessageDNA()" class="px-6 py-3 rounded-2xl font-extrabold text-slate-950 bg-gradient-to-r from-teal-300 to-indigo-300 hover:brightness-110 shadow-lg shadow-teal-500/20 active:scale-95 transition cursor-pointer">
+                 Analyze Scam DNA
+              </button>
+              <button onclick="clearScannerBox()" class="px-4 py-3 rounded-2xl font-semibold text-slate-300 bg-slate-900/90 border border-white/10 hover:bg-slate-800 active:scale-95 transition cursor-pointer">
+                Clear
+              </button>
+            </div>
+            <span class="text-xs font-mono text-slate-400">🔒 Zero data leaves your browser</span>
+          </div>
+        </div>
+
+        
+        <div id="dnaResultBox" class="hidden mt-8 pt-6 border-t border-white/10">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            
+            <div class="lg:col-span-4 flex flex-col items-center justify-center bg-slate-950/80 rounded-2xl p-5 border border-white/10">
+              <div class="relative w-36 h-36 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="50" stroke="#1e293b" stroke-width="10" fill="none"/>
+                  <circle id="dnaGaugeArc" cx="60" cy="60" r="50" stroke="#2dd4bf" stroke-width="10" stroke-linecap="round" fill="none" stroke-dasharray="314" stroke-dashoffset="314" style="transition: stroke-dashoffset 0.8s ease, stroke 0.4s ease;"/>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span id="dnaRiskPercent" class="text-3xl font-mono font-black text-white">0%</span>
+                  <span class="text-[10px] font-mono uppercase text-slate-400">THREAT SCORE</span>
+                </div>
+              </div>
+              <div id="dnaVerdictPill" class="mt-3 px-4 py-1 rounded-full text-xs font-extrabold tracking-wide uppercase">
+                ANALYZING
+              </div>
+            </div>
+
+            
+            <div class="lg:col-span-8 space-y-4">
+             
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div class="bg-slate-950/80 p-3 rounded-xl border border-white/10">
+                  <div class="text-[11px] font-mono text-slate-400">URGENCY</div>
+                  <div id="psychUrgency" class="text-base font-mono font-bold text-amber-300 mt-0.5">0%</div>
+                </div>
+                <div class="bg-slate-950/80 p-3 rounded-xl border border-white/10">
+                  <div class="text-[11px] font-mono text-slate-400">GREED / BAIT</div>
+                  <div id="psychGreed" class="text-base font-mono font-bold text-rose-300 mt-0.5">0%</div>
+                </div>
+                <div class="bg-slate-950/80 p-3 rounded-xl border border-white/10">
+                  <div class="text-[11px] font-mono text-slate-400">FEAR / THREAT</div>
+                  <div id="psychFear" class="text-base font-mono font-bold text-purple-300 mt-0.5">0%</div>
+                </div>
+                <div class="bg-slate-950/80 p-3 rounded-xl border border-white/10">
+                  <div class="text-[11px] font-mono text-slate-400">LINK RISK</div>
+                  <div id="psychLink" class="text-base font-mono font-bold text-cyan-300 mt-0.5">0%</div>
+                </div>
+              </div>
+
+              
+              <div class="bg-slate-950/80 p-4 rounded-2xl border border-white/10 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono uppercase text-slate-400">Highlighted Red-Flag Triggers:</span>
+                  <button onclick="copySafeReply()" class="px-3 py-1 rounded-lg text-xs font-bold bg-teal-500/20 text-teal-200 border border-teal-400/30 hover:bg-teal-500/30 cursor-pointer">
+                    📋 Copy Anti-Scam Reply
+                  </button>
+                </div>
+                <div id="xrayHighlightedText" class="text-sm text-slate-200 bg-slate-900/90 p-3 rounded-xl border border-white/5 leading-relaxed"></div>
+                <ul id="dnaFlagsList" class="space-y-1 text-xs sm:text-sm text-slate-300 pt-1"></ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      
+      <div id="call-simulator" class="lg:col-span-6 vault-card rounded-3xl p-6 sm:p-8 border border-indigo-400/25 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-4">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-widest text-indigo-400">Module 02 • Voice-Trap Roleplay</span>
+              <h2 class="text-2xl font-extrabold text-white mt-0.5">Live Scam Call Simulator</h2>
+            </div>
+            <button onclick="resetCallSim()" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 border border-white/10 hover:bg-slate-800 cursor-pointer">
+              ↻ Restart Call
+            </button>
+          </div>
+          <p class="text-sm text-slate-400 mb-5">Experience how "Fake Customs / TRAI Digital Arrest" callers pressure victims—and practice shutting them down!</p>
+
+          
+          <div class="bg-[#050814] border border-indigo-500/30 rounded-3xl p-5 space-y-4 shadow-inner">
+     
+            <div class="flex items-center justify-between border-b border-white/10 pb-3.5">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-xl">
+                  🕵️
+                </div>
+                <div>
+                  <div class="text-sm font-bold text-white flex items-center gap-2">
+                    <span>Mumbai Customs HQ</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-rose-500/20 text-rose-300">SPOOFED ID</span>
+                  </div>
+                  <div class="text-xs font-mono text-slate-400">+91 98210-XXXXX • <span id="callStatusLabel" class="text-amber-300">Incoming Call...</span></div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-[10px] font-mono text-slate-400">TRAP RISK</div>
+                <div id="callTrapMeter" class="text-sm font-mono font-extrabold text-teal-300">0%</div>
+              </div>
+            </div>
+
+            
+            <div id="callTranscript" class="space-y-2.5 min-h-[135px] max-h-[210px] overflow-y-auto pr-1 text-sm">
+              <div class="p-3 rounded-2xl bg-slate-900/90 border border-white/10 text-slate-300 text-xs">
+                📲 Incoming call from unknown number claiming to be <strong>TRAI / Mumbai Customs</strong>. Tap <strong>Answer Call</strong> to test your response!
+              </div>
+            </div>
+
+            
+            <div id="callActionButtons" class="pt-2 flex flex-wrap gap-2.5">
+              <button onclick="startScamCall()" class="w-full py-3 rounded-2xl font-extrabold text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:brightness-110 active:scale-95 transition cursor-pointer flex items-center justify-center gap-2">
+                <span>📞</span>
+                <span>Answer Simulated Scam Call</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div id="upi-checker" class="lg:col-span-6 vault-card rounded-3xl p-6 sm:p-8 border border-teal-400/25 flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-teal-400">Module 03 • Payment Armor</span>
+          <h2 class="text-2xl font-extrabold text-white mt-0.5">UPI QR & Collect Trap Checker</h2>
+          <p class="text-sm text-slate-400 mt-1 mb-5">Test any UPI link or payment request before scanning or entering your 4/6-digit UPI PIN.</p>
+
+          
+          <div class="flex flex-wrap gap-2 mb-4">
+            <button onclick="testUpiScenario('collect')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25 cursor-pointer">
+              OLX Buyer "Receive ₹8,000" QR
+            </button>
+            <button onclick="testUpiScenario('refund')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 cursor-pointer">
+              Fake Cashback Collect Link
+            </button>
+            <button onclick="testUpiScenario('merchant')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 cursor-pointer">
+              Verified Grocery Merchant
+            </button>
+          </div>
+
+          
+          <div class="flex flex-col sm:flex-row gap-2.5 mb-5">
+            <input
+              id="upiInputBox"
+              type="text"
+              placeholder="Paste upi://pay?... link or describe request (e.g. Enter PIN to receive cashback)"
+              class="flex-1 rounded-2xl bg-slate-950/90 border border-slate-700/80 focus:border-teal-400 text-slate-100 placeholder-slate-500 px-4 py-3 text-xs sm:text-sm font-mono outline-none"
+            />
+            <button onclick="inspectUpiPayload()" class="px-5 py-3 rounded-2xl font-extrabold text-slate-950 bg-teal-300 hover:bg-teal-200 active:scale-95 transition cursor-pointer shrink-0">
+              Verify UPI
+            </button>
+          </div>
+
+          
+          <div id="upiVerdictCard" class="rounded-2xl bg-slate-950/85 border border-white/10 p-4 space-y-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-teal-500/15 border border-teal-400/30 flex items-center justify-center text-lg shrink-0">
+                🔐
+              </div>
+              <div>
+                <div class="text-xs font-mono uppercase text-teal-300">GOLDEN RULE OF UPI</div>
+                <div class="text-sm font-bold text-white">Receiving Money = ZERO PIN REQUIRED</div>
+              </div>
+            </div>
+            <p id="upiVerdictExplain" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Your UPI PIN is <strong>ONLY</strong> used to send money out of your bank account. If anyone sends a QR code or link asking for your PIN to "receive" a refund, prize, or OLX payment, it is 100% a scam.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  
+  <section id="inbox-game" class="py-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="vault-card rounded-3xl p-6 sm:p-8 border border-amber-400/25">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-amber-300">Module 04 • Gamified Cyber Reflex</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-0.5">60-Second Inbox Defender</h2>
+            <p class="text-sm text-slate-400">Rapidly triage incoming alerts! Click <strong>BLOCK SCAM</strong> or <strong>VERIFY SAFE</strong> to build your combo and unlock a Defender Badge.</p>
+          </div>
+
+          
+          <div class="flex items-center gap-2.5 self-start sm:self-auto">
+            <div class="px-3.5 py-2 rounded-2xl bg-slate-950/90 border border-white/10 text-xs font-mono">
+              TIME: <span id="gameTimerText" class="font-bold text-amber-300">60s</span>
+            </div>
+            <div class="px-3.5 py-2 rounded-2xl bg-slate-950/90 border border-white/10 text-xs font-mono">
+              COMBO: <span id="gameComboText" class="font-bold text-indigo-300">x1</span>
+            </div>
+            <div class="px-3.5 py-2 rounded-2xl bg-slate-950/90 border border-teal-400/30 text-xs font-mono">
+              SCORE: <span id="gameScoreText" class="font-bold text-teal-300">0</span>
+            </div>
+          </div>
+        </div>
+
+        
+        <div id="gameStage" class="mt-6">
+          
+          <div id="gameIntroView" class="text-center py-8 space-y-4">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-400/15 border border-amber-400/30 text-3xl">
+              🎮
+            </div>
+            <h3 class="text-xl font-bold text-white">Ready to Defend Your Digital Inbox?</h3>
+            <p class="text-sm text-slate-400 max-w-md mx-auto">
+              You have 60 seconds to sort real bank/courier messages from clever phishing traps. Fast streaks multiply your points!
+            </p>
+            <button onclick="startInboxGame()" class="px-7 py-3.5 rounded-2xl font-extrabold text-slate-950 bg-gradient-to-r from-amber-300 via-teal-300 to-indigo-300 hover:brightness-110 active:scale-95 transition cursor-pointer shadow-lg shadow-amber-500/20">
+              ▶ Start 60s Challenge
+            </button>
+          </div>
+
+          
+          <div id="gameActiveView" class="hidden max-w-xl mx-auto space-y-5">
+            <div class="bg-slate-950/90 border border-white/15 rounded-3xl p-6 space-y-3 shadow-xl">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span id="cardAppBadge" class="px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">SMS ALERT</span>
+                <span id="cardSenderText" class="text-slate-400">+91-98XXX-XXXXX</span>
+              </div>
+              <p id="cardBodyText" class="text-base sm:text-lg font-medium text-white leading-relaxed pt-1">
+                Loading message...
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3.5">
+              <button onclick="submitGameChoice(true)" class="py-4 rounded-2xl font-extrabold text-white bg-gradient-to-r from-rose-600 to-red-500 hover:brightness-110 active:scale-95 transition cursor-pointer shadow-lg shadow-rose-600/25 flex items-center justify-center gap-2">
+                <span>🚫</span>
+                <span>BLOCK SCAM</span>
+              </button>
+              <button onclick="submitGameChoice(false)" class="py-4 rounded-2xl font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:brightness-110 active:scale-95 transition cursor-pointer shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                <span>✅</span>
+                <span>VERIFY SAFE</span>
+              </button>
+            </div>
+          </div>
+
+        
+          <div id="gameOverView" class="hidden max-w-lg mx-auto text-center bg-slate-950/90 border border-teal-400/30 rounded-3xl p-6 space-y-4">
+            <div class="text-4xl">🏆</div>
+            <div class="text-xs font-mono uppercase tracking-widest text-teal-400">CHALLENGE COMPLETE</div>
+            <h3 id="defenderRankTitle" class="text-2xl font-black text-white">Digital Guardian</h3>
+            <p id="gameSummaryStats" class="text-sm text-slate-300">You scored 0 points!</p>
+            <div class="flex flex-wrap justify-center gap-3 pt-2">
+              <button onclick="copyDefenderBadge()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-teal-500/20 text-teal-200 border border-teal-400/40 hover:bg-teal-500/30 cursor-pointer">
+                📋 Copy Defender Pass
+              </button>
+              <button onclick="startInboxGame()" class="px-5 py-2.5 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-300 hover:bg-amber-200 cursor-pointer">
+                ↻ Play Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="radar-wall" class="py-10 pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        
+        <div class="lg:col-span-5 vault-card rounded-3xl p-6 border border-teal-400/20 text-center space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono uppercase text-teal-400">Live Threat Radar</span>
+            <span class="text-xs font-mono text-slate-400">Tap a hotspot blip</span>
+          </div>
+
+          <div class="relative w-64 h-64 mx-auto">
+            <svg class="w-full h-full" viewBox="0 0 240 240">
+              <circle cx="120" cy="120" r="110" fill="midnightblue" stroke="turqoise" stroke-opacity="0.3" stroke-width="1.5"/>
+              <circle cx="120" cy="120" r="75" fill="none" stroke="turqoise" stroke-opacity="0.2" stroke-dasharray="4 4"/>
+              <circle cx="120" cy="120" r="40" fill="none" stroke="turqoise" stroke-opacity="0.2"/>
+              <line x1="120" y1="10" x2="120" y2="230" stroke="turqoise" stroke-opacity="0.15"/>
+              <line x1="10" y1="120" x2="230" y2="120" stroke="turqoise" stroke-opacity="0.15"/>
+              
+              <path class="ring-cw" d="M120 120 L120 10 A110 110 0 0 1 215 65 Z" fill="turqoise" fill-opacity="0.14"/>
+
+              
+              <g onclick="selectRadarHotspot(0)" class="cursor-pointer">
+                <circle cx="165" cy="70" r="12" fill="coral pink" fill-opacity="0.25"/>
+                <circle cx="165" cy="70" r="5" fill="coral pink"/>
+              </g>
+              <g onclick="selectRadarHotspot(1)" class="cursor-pointer">
+                <circle cx="72" cy="88" r="12" fill="amber yellow" fill-opacity="0.25"/>
+                <circle cx="72" cy="88" r="5" fill="amber yellow"/>
+              </g>
+              <g onclick="selectRadarHotspot(2)" class="cursor-pointer">
+                <circle cx="155" cy="168" r="12" fill="light indigo" fill-opacity="0.25"/>
+                <circle cx="155" cy="168" r="5" fill="light indigo"/>
+              </g>
+              <g onclick="selectRadarHotspot(3)" class="cursor-pointer">
+                <circle cx="78" cy="162" r="12" fill="Emerald Green" fill-opacity="0.25"/>
+                <circle cx="78" cy="162" r="5" fill="Emerald Green"/>
+              </g>
+            </svg>
+          </div>
+
+          
+          <div id="radarHotspotDetail" class="bg-slate-950/85 border border-white/10 rounded-2xl p-4 text-left space-y-1">
+            <div class="text-xs font-mono text-rose-400 font-bold">HOTSPOT #1 • HIGH SURGE</div>
+            <div class="text-base font-bold text-white">UPI QR Collect & Cashback Scam</div>
+            <p class="text-xs text-slate-300 leading-relaxed">Fraudsters send fake QR codes on OLX/Facebook Marketplace claiming you will receive money upon scanning and entering your PIN.</p>
+          </div>
+        </div>
+
+      
+        <div class="lg:col-span-7 vault-card rounded-3xl p-6 sm:p-8 border border-indigo-400/20 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-xs font-mono uppercase text-indigo-400">Crowdsourced Defense</span>
+              <h2 class="text-2xl font-extrabold text-white">Community Scam Alert Wall</h2>
+            </div>
+            <span class="text-xs font-mono text-teal-300">Live Feed • Updated Instant</span>
+          </div>
+
+          
+          <form onsubmit="submitCommunityScam(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 bg-slate-950/80 p-3.5 rounded-2xl border border-white/10">
+            <select id="reportCategory" class="sm:col-span-4 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-200 px-3 py-2.5 outline-none">
+              <option value="UPI / QR Fraud">UPI / QR Fraud</option>
+              <option value="Fake KYC / Bank SMS">Fake KYC / Bank SMS</option>
+              <option value="Digital Arrest Call">Digital Arrest Call</option>
+              <option value="Part-Time Job Scam">Part-Time Job Scam</option>
+            </select>
+            <input
+              id="reportDetails"
+              type="text"
+              required
+              placeholder="Share scam number, fake URL, or modus operandi..."
+              class="sm:col-span-6 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-100 placeholder-slate-500 px-3 py-2.5 outline-none"
+            />
+            <button type="submit" class="sm:col-span-2 rounded-xl font-bold text-xs text-slate-950 bg-teal-300 hover:bg-teal-200 py-2.5 cursor-pointer transition">
+              + Post
+            </button>
+          </form>
+
+          
+          <div id="communityWallList" class="space-y-2.5 max-h-[270px] overflow-y-auto pr-1">
+            
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+  <div id="panicVaultModal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex justify-end">
+    <div class="w-full max-w-lg bg-[#090612] border-l border-rose-500/40 h-full overflow-y-auto p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+      <div class="space-y-5">
+        <div class="flex items-start justify-between gap-3 border-b border-rose-500/20 pb-4">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">
+              GOLDEN HOUR EMERGENCY PROTOCOL
+            </span>
+            <h3 class="text-2xl font-black text-white mt-2">Panic 1930 Action Vault</h3>
+            <p class="text-xs text-slate-300 mt-1">First 60 minutes are critical to freeze stolen funds across bank accounts.</p>
+          </div>
+          <button onclick="closePanicVault()" class="p-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-white/10 cursor-pointer">
+            ✕
+          </button>
+        </div>
+
+        
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-rose-600/25 to-amber-500/20 border border-rose-500/40 flex items-center justify-between gap-3">
+          <div>
+            <div class="text-[11px] font-mono text-rose-300">NATIONAL CYBER CRIME HELPLINE</div>
+            <div class="text-2xl font-mono font-black text-white">CALL 1930</div>
+            <div class="text-xs text-slate-300">Official Portal: <span class="text-teal-300 font-semibold">cybercrime.gov.in</span></div>
+          </div>
+          <button onclick="copyBankFreezeMessage()" class="px-3.5 py-2.5 rounded-xl text-xs font-extrabold bg-rose-500 text-white hover:bg-rose-400 active:scale-95 transition cursor-pointer shrink-0">
+            Copy Bank Freeze SMS
+          </button>
+        </div>
+
+        
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-slate-400">ACTION CHECKLIST PROGRESS</span>
+            <span id="panicProgressLabel" class="text-teal-300 font-bold">0 / 4 Done</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden">
+            <div id="panicProgressBar" class="h-full bg-gradient-to-r from-rose-500 to-teal-400 w-0 transition-all duration-300"></div>
+          </div>
+        </div>
+
+        
+        <div class="space-y-2.5">
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950 border border-white/10 hover:border-rose-400/40 cursor-pointer">
+            <input type="checkbox" onchange="updatePanicProgress()" class="panic-step mt-1 w-4 h-4 accent-rose-500" />
+            <div>
+              <div class="text-sm font-bold text-white">1. Block UPI & NetBanking Immediately</div>
+              <div class="text-xs text-slate-400">Open your bank app or call your bank's 24x7 fraud helpline to freeze debit transactions.</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950 border border-white/10 hover:border-rose-400/40 cursor-pointer">
+            <input type="checkbox" onchange="updatePanicProgress()" class="panic-step mt-1 w-4 h-4 accent-rose-500" />
+            <div>
+              <div class="text-sm font-bold text-white">2. Dial 1930 & Report on cybercrime.gov.in</div>
+              <div class="text-xs text-slate-400">Keep the 12-digit UPI UTR / Reference ID, date, and scammer UPI ID handy.</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950 border border-white/10 hover:border-rose-400/40 cursor-pointer">
+            <input type="checkbox" onchange="updatePanicProgress()" class="panic-step mt-1 w-4 h-4 accent-rose-500" />
+            <div>
+              <div class="text-sm font-bold text-white">3. Turn On Airplane Mode if APK Installed</div>
+              <div class="text-xs text-slate-400">Disconnect internet immediately if you installed any screen-share or unknown `.apk` file.</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950 border border-white/10 hover:border-rose-400/40 cursor-pointer">
+            <input type="checkbox" onchange="updatePanicProgress()" class="panic-step mt-1 w-4 h-4 accent-rose-500" />
+            <div>
+              <div class="text-sm font-bold text-white">4. Save Screenshots & Call Recordings</div>
+              <div class="text-xs text-slate-400">Never delete chats—preserve SMS headers, payment receipts, and URLs for cyber police.</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <button onclick="closePanicVault()" class="mt-6 w-full py-3 rounded-2xl font-bold text-slate-200 bg-slate-900 border border-white/15 hover:bg-slate-800 cursor-pointer">
+        Close Emergency Vault
+      </button>
+    </div>
+  </div>
+
+ 
+  <div id="toastBanner" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden px-5 py-3 rounded-2xl bg-slate-900/95 border border-teal-400/40 text-teal-200 text-xs sm:text-sm font-semibold shadow-2xl">
+  </div>
+
+  
+  <footer class="border-t border-white/10 py-8 text-center text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="font-semibold text-slate-300">ScamShield BY Glithch hunters • Built for Digital Safety & Cyber Awareness</p>
+      <p class="mt-1">In case of financial cyber fraud in India, immediately call <span class="text-rose-400 font-mono font-bold">1930</span> or visit <span class="text-teal-300">cybercrime.gov.in</span>.</p>
+    </div>
+  </footer>
+
+  
+  <script>
+    
+    let audioOn = true;
+    let ctxAudio = null;
+
+    function toggleAudio() {
+      audioOn = !audioOn;
+      document.getElementById('audioToggleBtn').textContent = audioOn ? '🔊' : '🔇';
+      if (audioOn) playTone('good');
+      showToast(audioOn ? 'Cyber UI Audio Enabled' : 'UI Audio Muted');
+    }
+
+    function playTone(kind) {
+      if (!audioOn) return;
+      try {
+        if (!ctxAudio) ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctxAudio.state === 'suspended') ctxAudio.resume();
+
+        const osc = ctxAudio.createOscillator();
+        const gain = ctxAudio.createGain();
+        osc.connect(gain);
+        gain.connect(ctxAudio.destination);
+
+        const now = ctxAudio.currentTime;
+        if (kind === 'tap') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(580, now);
+          osc.frequency.exponentialRampToValueAtTime(860, now + 0.05);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.055);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        } else if (kind === 'good') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.setValueAtTime(780, now + 0.09);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+          osc.start(now);
+          osc.stop(now + 0.23);
+        } else if (kind === 'warn') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(210, now);
+          osc.frequency.setValueAtTime(165, now + 0.13);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.29);
+        }
+      } catch (err) {}
+    }
+
+   
+    let currentEnv = 'aurora';
+    const envColors = {
+      aurora:  { hex: 'rgba(45, 212, 191, 0.11)', glow: 'rgba(45, 212, 191, 0.45)', wave1: 'rgba(45, 212, 191, 0.08)', wave2: 'rgba(129, 140, 248, 0.08)' },
+      quantum: { hex: 'rgba(56, 189, 248, 0.12)', glow: 'rgba(251, 191, 36, 0.45)', wave1: 'rgba(56, 189, 248, 0.08)', wave2: 'rgba(251, 191, 36, 0.06)' },
+      crimson: { hex: 'rgba(251, 113, 133, 0.12)', glow: 'rgba(251, 113, 133, 0.45)', wave1: 'rgba(251, 113, 133, 0.08)', wave2: 'rgba(245, 158, 11, 0.07)' }
+    };
+
+    function switchEnvironment(envName) {
+      currentEnv = envName;
+      document.body.setAttribute('data-env', envName);
+      playTone('tap');
+
+      ['aurora', 'quantum', 'crimson'].forEach(key => {
+        const btn = document.getElementById(`envBtn-${key}`);
+        if (!btn) return;
+        btn.className = key === envName
+          ? 'px-3 py-1 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/30 transition cursor-pointer'
+          : 'px-3 py-1 rounded-full text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer';
+      });
+    }
+
+    function initHexAuroraCanvas() {
+      const canvas = document.getElementById('hexAuroraCanvas');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+      let tick = 0;
+
+      const pointer = { x: -999, y: -999 };
+      window.addEventListener('mousemove', e => { pointer.x = e.clientX; pointer.y = e.clientY; });
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      function drawHexagon(cx, cy, radius, strokeStyle, fillAlpha) {
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i - Math.PI / 6;
+          const x = cx + radius * Math.cos(angle);
+          const y = cy + radius * Math.sin(angle);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = strokeStyle;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        if (fillAlpha > 0) {
+          ctx.fillStyle = strokeStyle;
+          ctx.globalAlpha = fillAlpha;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      function renderFrame() {
+        ctx.clearRect(0, 0, w, h);
+        tick += 0.015;
+        const theme = envColors[currentEnv];
+
+        
+        for (let layer = 0; layer < 2; layer++) {
+          ctx.beginPath();
+          ctx.moveTo(0, h * 0.45);
+          for (let x = 0; x <= w; x += 40) {
+            const y = h * (0.35 + layer * 0.2) + Math.sin(x * 0.004 + tick + layer * 2) * 75;
+            ctx.lineTo(x, y);
+          }
+          ctx.lineTo(w, h);
+          ctx.lineTo(0, h);
+          ctx.closePath();
+          ctx.fillStyle = layer === 0 ? theme.wave1 : theme.wave2;
+          ctx.fill();
+        }
+
+        
+        const r = 34;
+        const dx = r * Math.sqrt(3);
+        const dy = r * 1.5;
+        const cols = Math.ceil(w / dx) + 1;
+        const rows = Math.ceil(h / dy) + 1;
+
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const cx = col * dx + (row % 2 === 1 ? dx / 2 : 0);
+            const cy = row * dy;
+            const dist = Math.hypot(cx - pointer.x, cy - pointer.y);
+
+            if (dist < 145) {
+              const intensity = (1 - dist / 145) * 0.32;
+              drawHexagon(cx, cy, r - 2, theme.glow, intensity);
+            } else if ((row + col) % 2 === 0) {
+              drawHexagon(cx, cy, r - 2, theme.hex, 0);
+            }
+          }
+        }
+
+        requestAnimationFrame(renderFrame);
+      }
+      renderFrame();
+    }
+
+    
+    function showToast(msg) {
+      const toast = document.getElementById('toastBanner');
+      toast.textContent = msg;
+      toast.classList.remove('hidden');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    function scrollToSection(sectionId, focusInputId) {
+      playTone('tap');
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+      if (focusInputId) {
+        setTimeout(() => document.getElementById(focusInputId).focus(), 450);
+      }
+    }
+
+    function initTicker() {
+      const alerts = [
+        "⚠️ FAKE SBI KYC LINK: sbi-kyc-update24.xyz blocked (1,420 reports)",
+        "🚨 DIGITAL ARREST SCAM: Spoofed +91-9821X calls posing as Mumbai Customs",
+        "🛡️ UPI QR TRAP: OLX buyers sending Collect QR codes for 'advance payment'",
+        "⚠️ APK MALWARE: 'RTO_Challan_View.apk' circulating on WhatsApp groups",
+        "✅ TIP: Never enter your UPI PIN to receive cashback or refunds!"
+      ];
+      const track = document.getElementById('liveTickerTrack');
+      const itemsHtml = [...alerts, ...alerts].map(item => `<span>${item}</span>`).join('');
+      track.innerHTML = itemsHtml;
+    }
+
+    
+    const messageSamples = {
+      upi: "CONGRATS! You won ₹12,500 GooglePay Cashback! Click http://bit.ly/claim-upi-reward and enter your UPI PIN to receive money immediately.",
+      arrest: "URGENT NOTICE from TRAI & Mumbai Customs: Your Aadhaar & SIM will be blocked in 2 hours due to illegal parcel. Join Skype video verification immediately or face Digital Arrest.",
+      job: "HR Hiring: Earn ₹3,800 daily from home by liking YouTube videos! Pay ₹499 refundable registration fee at http://yt-task-vip.xyz to start.",
+      safe: "Dear Customer, OTP for your online card transaction of INR 650.00 is 492810. Do NOT share this OTP with anyone, even bank officials."
+    };
+
+    function loadSampleMessage(key) {
+      playTone('tap');
+      document.getElementById('scanInput').value = messageSamples[key];
+      analyzeMessageDNA();
+    }
+
+    function clearScannerBox() {
+      playTone('tap');
+      document.getElementById('scanInput').value = '';
+      document.getElementById('dnaResultBox').classList.add('hidden');
+    }
+
+    function analyzeMessageDNA() {
+      const text = document.getElementById('scanInput').value.trim();
+      if (!text) {
+        playTone('warn');
+        showToast('Please paste a message or select a sample chip first!');
+        return;
+      }
+
+      const lower = text.toLowerCase();
+      const urgencyTriggers = ['urgent', 'immediately', '2 hours', 'blocked', 'suspended', 'today', 'notice', 'expire'];
+      const greedTriggers = ['won', 'cashback', 'earn', 'free', '₹', 'reward', 'prize', 'refund', 'fee'];
+      const fearTriggers = ['arrest', 'police', 'customs', 'trai', 'aadhaar', 'illegal', 'court', 'warrant'];
+      const linkTriggers = ['http://', 'bit.ly', '.xyz', '.apk', 'upi pin', 'claim-', 'verify'];
+
+      let urgency = 5, greed = 5, fear = 5, linkRisk = 5;
+      const detectedReasons = [];
+
+      urgencyTriggers.forEach(w => { if (lower.includes(w)) urgency += 30; });
+      greedTriggers.forEach(w => { if (lower.includes(w)) greed += 25; });
+      fearTriggers.forEach(w => { if (lower.includes(w)) fear += 32; });
+      linkTriggers.forEach(w => { if (lower.includes(w)) linkRisk += 35; });
+
+      
+      if (lower.includes('do not share') && !lower.includes('http://') && !lower.includes('.xyz')) {
+        urgency = 8; greed = 0; fear = 5; linkRisk = 0;
+        detectedReasons.push('✅ Contains official anti-fraud warning ("Do NOT share") with zero phishing links.');
+      }
+
+      urgency = Math.min(98, urgency);
+      greed = Math.min(98, greed);
+      fear = Math.min(98, fear);
+      linkRisk = Math.min(99, linkRisk);
+
+      let overallRisk = Math.round((urgency * 0.25) + (greed * 0.25) + (fear * 0.25) + (linkRisk * 0.25));
+      if (fear > 65 || linkRisk > 65 || (greed > 50 && urgency > 50)) {
+        overallRisk = Math.max(overallRisk, 88);
+      }
+
+      if (lower.includes('upi pin') && (lower.includes('receive') || lower.includes('cashback'))) {
+        detectedReasons.push('🚨 CRITICAL: You NEVER enter a UPI PIN to receive money!');
+      }
+      if (fear >= 40) detectedReasons.push('⚠️ Fear/Authority Impersonation: Real police/TRAI never conduct "Digital Arrest" on video calls.');
+      if (greed >= 40) detectedReasons.push('⚠️ Financial Bait: Unrealistic cashback or job fees are classic advance-fee scams.');
+      if (linkRisk >= 40) detectedReasons.push('⚠️ Malicious Link / Domain Risk: Shortened or `.xyz` burner domains steal credentials.');
+      if (detectedReasons.length === 0) detectedReasons.push('🛡️ No obvious scam keywords or unsafe URLs detected. Still verify sender identity.');
+
+      
+      document.getElementById('dnaResultBox').classList.remove('hidden');
+      document.getElementById('dnaRiskPercent').textContent = overallRisk + '%';
+      document.getElementById('psychUrgency').textContent = urgency + '%';
+      document.getElementById('psychGreed').textContent = greed + '%';
+      document.getElementById('psychFear').textContent = fear + '%';
+      document.getElementById('psychLink').textContent = linkRisk + '%';
+
+      const arc = document.getElementById('dnaGaugeArc');
+      const offset = 314 - (314 * overallRisk) / 100;
+      arc.style.strokeDashoffset = offset;
+
+      const verdictPill = document.getElementById('dnaVerdictPill');
+      if (overallRisk >= 60) {
+        arc.style.stroke = '#fb7185';
+        verdictPill.textContent = '🚨 HIGH SCAM DANGER';
+        verdictPill.className = 'mt-3 px-4 py-1 rounded-full text-xs font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/40';
+        playTone('warn');
+      } else if (overallRisk >= 30) {
+        arc.style.stroke = '#fbbf24';
+        verdictPill.textContent = '⚠️ SUSPICIOUS / CAUTION';
+        verdictPill.className = 'mt-3 px-4 py-1 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/40';
+        playTone('warn');
+      } else {
+        arc.style.stroke = '#34d399';
+        verdictPill.textContent = '✅ APPEARS SAFE';
+        verdictPill.className = 'mt-3 px-4 py-1 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+        playTone('good');
+      }
+
+      
+      const allKeywords = [...urgencyTriggers, ...greedTriggers, ...fearTriggers, ...linkTriggers];
+      const safeHtml = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const highlighted = safeHtml.replace(
+        new RegExp(`(${allKeywords.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi'),
+        '<mark class="bg-rose-500/35 text-rose-200 px-1 rounded font-bold">$1</mark>'
+      );
+      document.getElementById('xrayHighlightedText').innerHTML = highlighted;
+      document.getElementById('dnaFlagsList').innerHTML = detectedReasons.map(r => `<li>${r}</li>`).join('');
+
+      
+      const counter = document.getElementById('heroScansCount');
+      const num = parseInt(counter.textContent.replace(/,/g, ''), 10);
+      counter.textContent = (num + 1).toLocaleString();
+    }
+
+    function copySafeReply() {
+      const reply = "SCAM ALERT: This message has been flagged by ScamShield AI and reported to the National Cyber Crime Helpline (1930). Do not contact this number again.";
+      const temp = document.createElement('textarea');
+      temp.value = reply;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      playTone('good');
+      showToast('Anti-Scam warning reply copied to clipboard!');
+    }
+
+    
+    function resetCallSim() {
+      playTone('tap');
+      document.getElementById('callStatusLabel').textContent = 'Incoming Call...';
+      document.getElementById('callStatusLabel').className = 'text-amber-300';
+      document.getElementById('callTrapMeter').textContent = '0%';
+      document.getElementById('callTrapMeter').className = 'text-sm font-mono font-extrabold text-teal-300';
+      document.getElementById('callTranscript').innerHTML = `
+        <div class="p-3 rounded-2xl bg-slate-900/90 border border-white/10 text-slate-300 text-xs">
+          📲 Incoming call from unknown number claiming to be <strong>TRAI / Mumbai Customs</strong>. Tap <strong>Answer Call</strong> to test your response!
+        </div>`;
+      document.getElementById('callActionButtons').innerHTML = `
+        <button onclick="startScamCall()" class="w-full py-3 rounded-2xl font-extrabold text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:brightness-110 active:scale-95 transition cursor-pointer flex items-center justify-center gap-2">
+          <span>📞</span>
+          <span>Answer Simulated Scam Call</span>
+        </button>`;
+    }
+
+    function startScamCall() {
+      playTone('warn');
+      document.getElementById('callStatusLabel').textContent = 'Connected • 00:04';
+      document.getElementById('callStatusLabel').className = 'text-rose-400 font-bold';
+      document.getElementById('callTrapMeter').textContent = '45%';
+      document.getElementById('callTrapMeter').className = 'text-sm font-mono font-extrabold text-amber-300';
+
+      document.getElementById('callTranscript').innerHTML = `
+        <div class="p-3 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-100 text-xs leading-relaxed">
+          <strong>Scammer (Fake Officer):</strong> "Hello! A FedEx parcel in your name with illegal passports was seized at Mumbai Customs. Stay on Skype video call right now—you are under Digital Arrest!"
+        </div>`;
+
+      document.getElementById('callActionButtons').innerHTML = `
+        <button onclick="chooseCallReply('panic')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 text-slate-200 border border-white/15 hover:border-rose-400 cursor-pointer">
+          😰 "Sir please help, I'll share Aadhaar & bank details"
+        </button>
+        <button onclick="chooseCallReply('smart')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-teal-500/20 text-teal-200 border border-teal-400/40 hover:bg-teal-500/30 cursor-pointer">
+          🛡️ "Indian law has NO Digital Arrest! Hanging up & calling 1930"
+        </button>`;
+    }
+
+    function chooseCallReply(choice) {
+      const transcript = document.getElementById('callTranscript');
+      const actions = document.getElementById('callActionButtons');
+
+      if (choice === 'panic') {
+        playTone('warn');
+        document.getElementById('callTrapMeter').textContent = '99% DANGER';
+        document.getElementById('callTrapMeter').className = 'text-sm font-mono font-extrabold text-rose-400';
+        transcript.innerHTML += `
+          <div class="p-3 rounded-2xl bg-rose-600/25 border border-rose-500/50 text-rose-100 text-xs leading-relaxed">
+            <strong>⚠️ TRAP TRIGGERED:</strong> Never share Aadhaar, bank info, or join video calls! Real police/customs NEVER conduct "Digital Arrest" over Skype/WhatsApp or ask for "clearance money".
+          </div>`;
+      } else {
+        playTone('good');
+        document.getElementById('callStatusLabel').textContent = 'Call Disconnected Safely';
+        document.getElementById('callStatusLabel').className = 'text-emerald-400 font-bold';
+        document.getElementById('callTrapMeter').textContent = 'BLOCKED ✓';
+        document.getElementById('callTrapMeter').className = 'text-sm font-mono font-extrabold text-emerald-400';
+        transcript.innerHTML += `
+          <div class="p-3 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-100 text-xs leading-relaxed">
+            <strong>🎉 SCAM DEFEATED!</strong> You spotted the fake authority script immediately. Always hang up and report the number on <strong>Chakshu (sancharsaathi.gov.in)</strong> or dial <strong>1930</strong>.
+          </div>`;
+      }
+
+      actions.innerHTML = `
+        <button onclick="resetCallSim()" class="w-full py-2.5 rounded-xl text-xs font-bold bg-indigo-500/20 text-indigo-200 border border-indigo-400/40 hover:bg-indigo-500/30 cursor-pointer">
+          ↻ Replay Simulation
+        </button>`;
+    }
+
+    
+    const upiPresets = {
+      collect: "upi://collect?pa=olx-buyer-pay@okicici&am=8000&tn=Scan_And_Enter_PIN_To_Receive_Payment",
+      refund: "https://gpay-cashback-claim.xyz/collect-request?pin=required",
+      merchant: "upi://pay?pa=freshmart.store@hdfcbank&pn=FreshMart%20Grocery&am=340.00&cu=INR"
+    };
+
+    function testUpiScenario(type) {
+      playTone('tap');
+      document.getElementById('upiInputBox').value = upiPresets[type];
+      inspectUpiPayload();
+    }
+
+    function inspectUpiPayload() {
+      const val = document.getElementById('upiInputBox').value.trim();
+      if (!val) {
+        playTone('warn');
+        showToast('Enter a UPI link or select a preset above!');
+        return;
+      }
+
+      const lower = val.toLowerCase();
+      const card = document.getElementById('upiVerdictCard');
+      const explain = document.getElementById('upiVerdictExplain');
+
+      const isTrap = lower.includes('collect') || lower.includes('receive') || lower.includes('cashback') || lower.includes('.xyz') || lower.includes('pin');
+
+      if (isTrap) {
+        playTone('warn');
+        card.className = 'rounded-2xl bg-rose-950/60 border border-rose-500/50 p-4 space-y-2';
+        explain.innerHTML = `
+          <strong class="text-rose-300 block">🚨 HIGH-RISK UPI DEBIT TRAP DETECTED!</strong>
+          This request is designed to <strong>DEDUCT</strong> money from your bank account, NOT credit it. Never enter your UPI PIN for "collect", "cashback", or "buyer advance" requests.`;
+      } else {
+        playTone('good');
+        card.className = 'rounded-2xl bg-emerald-950/50 border border-emerald-500/40 p-4 space-y-2';
+        explain.innerHTML = `
+          <strong class="text-emerald-300 block">✅ STANDARD OUTGOING MERCHANT PAYMENT</strong>
+          Matches standard <code>upi://pay</code> merchant format. Always double-check the verified merchant name on your UPI app screen before entering your PIN.`;
+      }
+    }
+
+    
+    const inboxCards = [
+      { app: 'SMS ALERT', sender: '+91-90122-88310', text: 'Your electricity connection will be cut tonight at 9:30 PM due to unpaid bill. Call officer 9012288310 immediately.', isScam: true },
+      { app: 'BANK SMS', sender: 'AD-ICICIB', text: 'INR 499.00 spent on ICICI Bank Credit Card XX9012 at AMAZON INDIA. If not you, call 1800-1080.', isScam: false },
+      { app: 'WHATSAPP', sender: 'Unknown HR', text: 'Congratulations! Earn ₹5,000/day liking Instagram reels. Pay ₹300 registration fee to join VIP Telegram group.', isScam: true },
+      { app: 'UPI REQUEST', sender: 'OLX Buyer', text: 'I sent ₹10,000 QR code. Please scan and enter your UPI PIN to receive money into your account.', isScam: true },
+      { app: 'COURIER SMS', sender: 'JX-BLUDRT', text: 'Your BlueDart shipment AWB 409182910 is out for delivery today. Track on bluedart.com.', isScam: false },
+      { app: 'SMS LINK', sender: '+91-88201-11092', text: 'Your SBI YONO account is blocked! Update PAN card immediately at http://sbi-pan-kyc.xyz', isScam: true },
+      { app: 'OTP ALERT', sender: 'VM-IRCTCi', text: '619402 is your OTP for IRCTC ticket booking. Do NOT share this OTP with anyone.', isScam: false },
+      { app: 'WHATSAPP APK', sender: 'Traffic Police', text: 'Pending E-Challan of ₹2,000! Download RTO_Challan_Pay.apk immediately to avoid court summons.', isScam: true }
+    ];
+
+    let gameScore = 0;
+    let gameCombo = 1;
+    let gameSeconds = 60;
+    let gameInterval = null;
+    let currentCardIndex = 0;
+
+    function startInboxGame() {
+      playTone('good');
+      gameScore = 0;
+      gameCombo = 1;
+      gameSeconds = 60;
+      currentCardIndex = 0;
+
+      document.getElementById('gameScoreText').textContent = '0';
+      document.getElementById('gameComboText').textContent = 'x1';
+      document.getElementById('gameTimerText').textContent = '60s';
+
+      document.getElementById('gameIntroView').classList.add('hidden');
+      document.getElementById('gameOverView').classList.add('hidden');
+      document.getElementById('gameActiveView').classList.remove('hidden');
+
+      renderNextGameCard();
+
+      clearInterval(gameInterval);
+      gameInterval = setInterval(() => {
+        gameSeconds--;
+        document.getElementById('gameTimerText').textContent = gameSeconds + 's';
+        if (gameSeconds <= 0) {
+          endInboxGame();
+        }
+      }, 1000);
+    }
+
+    function renderNextGameCard() {
+      const card = inboxCards[currentCardIndex % inboxCards.length];
+      document.getElementById('cardAppBadge').textContent = card.app;
+      document.getElementById('cardSenderText').textContent = card.sender;
+      document.getElementById('cardBodyText').textContent = `"${card.text}"`;
+    }
+
+    function submitGameChoice(userBlocked) {
+      const card = inboxCards[currentCardIndex % inboxCards.length];
+      const isCorrect = card.isScam === userBlocked;
+
+      if (isCorrect) {
+        const pts = 100 * gameCombo;
+        gameScore += pts;
+        gameCombo = Math.min(5, gameCombo + 1);
+        playTone('good');
+        showToast(`Spot On! +${pts} PTS (Combo x${gameCombo})`);
+      } else {
+        gameCombo = 1;
+        playTone('warn');
+        showToast(card.isScam ? 'Oops! That was a scam trap!' : 'Oops! That was a real message!');
+      }
+
+      document.getElementById('gameScoreText').textContent = gameScore;
+      document.getElementById('gameComboText').textContent = 'x' + gameCombo;
+      document.getElementById('navScoreBadge').textContent = gameScore + ' PTS';
+
+      currentCardIndex++;
+      renderNextGameCard();
+    }
+
+    function endInboxGame() {
+      clearInterval(gameInterval);
+      document.getElementById('gameActiveView').classList.add('hidden');
+      document.getElementById('gameOverView').classList.remove('hidden');
+
+      let rank = 'Cyber Rookie 🛡️';
+      if (gameScore >= 1200) rank = 'Legendary Hex-Guardian 🏆';
+      else if (gameScore >= 600) rank = 'Master Scam Hunter ⚡';
+
+      document.getElementById('defenderRankTitle').textContent = rank;
+      document.getElementById('gameSummaryStats').textContent = `Final Score: ${gameScore} PTS • You triaged ${currentCardIndex} messages!`;
+      playTone('good');
+    }
+
+    function copyDefenderBadge() {
+      const badgeText = `🛡️ ScamShield Certified: ${document.getElementById('defenderRankTitle').textContent} (${gameScore} PTS)! I can spot UPI traps & fake calls in seconds.`;
+      const temp = document.createElement('textarea');
+      temp.value = badgeText;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      playTone('good');
+      showToast('Defender Pass copied! Share it with friends & family.');
+    }
+
+    
+    const radarHotspots = [
+      { tag: 'HOTSPOT #1 • HIGH SURGE', color: 'text-rose-400', title: 'UPI QR Collect & Cashback Scam', desc: 'Fraudsters send fake QR codes on OLX/Facebook Marketplace claiming you will receive money upon scanning and entering your PIN.' },
+      { tag: 'HOTSPOT #2 • ACTIVE CALLS', color: 'text-amber-300', title: 'Fake TRAI / Customs "Digital Arrest"', desc: 'Callers impersonate police/customs on video calls claiming an illegal parcel is linked to your Aadhaar and demand "clearance transfer".' },
+      { tag: 'HOTSPOT #3 • MALWARE APK', color: 'text-indigo-300', title: 'Fake RTO Challan & Wedding Card APKs', desc: 'Malicious `.apk` files shared on WhatsApp steal SMS OTPs and banking credentials once installed.' },
+      { tag: 'HOTSPOT #4 • JOB SCAMS', color: 'text-emerald-300', title: 'Prepaid YouTube / Telegram Task Traps', desc: 'Scammers pay ₹150 initially to build trust, then trap victims into depositing lakhs for "VIP task upgrades".' }
+    ];
+
+    function selectRadarHotspot(index) {
+      playTone('tap');
+      const item = radarHotspots[index];
+      document.getElementById('radarHotspotDetail').innerHTML = `
+        <div class="text-xs font-mono ${item.color} font-bold">${item.tag}</div>
+        <div class="text-base font-bold text-white">${item.title}</div>
+        <p class="text-xs text-slate-300 leading-relaxed">${item.desc}</p>`;
+    }
+
+    const communityReports = [
+      { cat: 'Digital Arrest Call', detail: '+91-98214-XXXXX claiming FedEx parcel from Mumbai to Taiwan had drugs. Hung up immediately!', time: '2m ago' },
+      { cat: 'UPI / QR Fraud', detail: 'Buyer on OLX sent ₹15,000 QR saying "enter PIN to receive advance". Blocked & reported!', time: '9m ago' },
+      { cat: 'Fake KYC / Bank SMS', detail: 'SMS from +91-70118-XXXXX with link hdfc-kyc-update26.xyz asking for netbanking password.', time: '18m ago' }
+    ];
+
+    function renderCommunityWall() {
+      const list = document.getElementById('communityWallList');
+      list.innerHTML = communityReports.map(r => `
+        <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-white/10 flex items-start justify-between gap-3">
+          <div>
+            <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+              ${r.cat}
+            </span>
+            <p class="text-xs sm:text-sm text-slate-200 mt-1.5">${r.detail}</p>
+          </div>
+          <span class="text-[11px] font-mono text-slate-500 shrink-0">${r.time}</span>
+        </div>
+      `).join('');
+    }
+
+    function submitCommunityScam(e) {
+      e.preventDefault();
+      const cat = document.getElementById('reportCategory').value;
+      const detail = document.getElementById('reportDetails').value.trim();
+      if (!detail) return;
+
+      communityReports.unshift({ cat, detail, time: 'Just now' });
+      document.getElementById('reportDetails').value = '';
+      renderCommunityWall();
+      playTone('good');
+      showToast('Thank you! Your scam alert is now live on the Community Wall.');
+    }
+
+    
+    function openPanicVault() {
+      playTone('warn');
+      document.getElementById('panicVaultModal').classList.remove('hidden');
+    }
+
+    function closePanicVault() {
+      playTone('tap');
+      document.getElementById('panicVaultModal').classList.add('hidden');
+    }
+
+    function updatePanicProgress() {
+      playTone('tap');
+      const steps = document.querySelectorAll('.panic-step');
+      const checked = Array.from(steps).filter(s => s.checked).length;
+      const pct = (checked / steps.length) * 100;
+      document.getElementById('panicProgressLabel').textContent = `${checked} / ${steps.length} Done`;
+      document.getElementById('panicProgressBar').style.width = pct + '%';
+    }
+
+    function copyBankFreezeMessage() {
+      const msg = "URGENT CYBER FRAUD: Unauthorized UPI/Bank debit on my account. Please freeze outward transactions immediately. UTR Ref: [ENTER_UTR] | Amount: [ENTER_AMOUNT] | Complaint logged on 1930.";
+      const temp = document.createElement('textarea');
+      temp.value = msg;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      playTone('good');
+      showToast('Emergency Bank Freeze SMS copied to clipboard!');
+    }
+
+    
+    window.addEventListener('DOMContentLoaded', () => {
+      initHexAuroraCanvas();
+      initTicker();
+      renderCommunityWall();
+    });
+  </script>
+</body>
+</html>
